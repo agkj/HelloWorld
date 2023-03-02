@@ -43,8 +43,8 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         mAuth = FirebaseAuth.getInstance();
-        editTextEmail = findViewById(R.id.email);
-        editTextPassword = findViewById(R.id.password);
+        editTextEmail = findViewById(R.id.emailRegister);
+        editTextPassword = findViewById(R.id.passwordRegister);
         btnReg = findViewById(R.id.btn_register);
         textView = findViewById(R.id.loginNow);
 
@@ -68,7 +68,7 @@ public class Registration extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
 
-                    Toast.makeText(Registration.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, "Password or email is empty, try again.", Toast.LENGTH_SHORT).show();
                     return;
 
 
@@ -81,18 +81,35 @@ public class Registration extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     //Log.d(TAG, "createUserWithEmail:success");
-                                    Toast.makeText(Registration.this, "Account created",
-                                            Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(intent);
-                                    finish();
 
+                                    //email verification
+                                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+
+                                                Toast.makeText(Registration.this, "Please verify your email address before logging in.",
+                                                        Toast.LENGTH_SHORT).show();
+
+                                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                                startActivity(intent);
+                                                finish();
+
+
+                                            }
+                                            else{
+                                                Toast.makeText(Registration.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                                            }
+                                        }
+                                    });
 
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(Registration.this, "Authentication failed.",
+                                    Toast.makeText(Registration.this, "Account creation failed. Try again",
                                             Toast.LENGTH_SHORT).show();
 
                                 }

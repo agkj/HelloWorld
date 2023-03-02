@@ -31,18 +31,12 @@ public class Login extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in, if signed in, go into main page
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        if(currentUser != null){
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
     }
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +44,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        editTextEmail = findViewById(R.id.email);
-        editTextPassword = findViewById(R.id.password);
+        editTextEmail = findViewById(R.id.emailLogin);
+        editTextPassword = findViewById(R.id.passwordLogin);
         btnLogin = findViewById(R.id.btn_login);
         textView = findViewById(R.id.registerNow);
 
@@ -88,12 +82,19 @@ public class Login extends AppCompatActivity {
                                    // Log.d(TAG, "signInWithEmail:success");
                                     //FirebaseUser user = mAuth.getCurrentUser();
                                    // updateUI(user);
+                                    if(mAuth.getCurrentUser().isEmailVerified()){
+                                        Toast.makeText(Login.this, "Welcome",
+                                                Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
 
-                                    Toast.makeText(Login.this, "Welcome",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    }
+                                    else{
+                                        Toast.makeText(Login.this, "Please verify your account",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
 
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -105,28 +106,8 @@ public class Login extends AppCompatActivity {
                             }
                         });
 
-
-
-
-
-
-
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
