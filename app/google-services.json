@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "139226936271",
+    "project_id": "parker-8673e",
+    "storage_bucket": "parker-8673e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139226936271:android:52da205ee5a423e58598ba",
+        "android_client_info": {
+          "package_name": "com.example.helloworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139226936271-cs9fqa2ko335sja9rc2oep2ot313s491.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiNqBIjXMCdWwxDWt_kzC3vev4KGfimdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139226936271-cs9fqa2ko335sja9rc2oep2ot313s491.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
