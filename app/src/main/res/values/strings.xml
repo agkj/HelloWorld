@@ -6,4 +6,7 @@
     <string name="register">Account registration</string>
     <string name="click_to_login">Click to Login</string>
     <string name="click_to_register">Click to Register</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="car_number_plate">Car Number Plate</string>
 </resources>

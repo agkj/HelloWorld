@@ -35,12 +35,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }else{
-
             textView.setText(user.getEmail());
-
-
         }
-
         //signs user out
         button.setOnClickListener(new View.OnClickListener() {
             @Override

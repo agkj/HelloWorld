@@ -17,12 +17,19 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registration extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextPhone, editTextName, editTextCarPlate;
     Button btnReg;
     FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
     TextView textView;
 
     @Override
@@ -43,10 +50,16 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         editTextEmail = findViewById(R.id.emailRegister);
         editTextPassword = findViewById(R.id.passwordRegister);
         btnReg = findViewById(R.id.btn_register);
         textView = findViewById(R.id.loginNow);
+
+        //register additional user details
+        editTextPhone = findViewById(R.id.phoneRegister);
+        editTextName = findViewById(R.id.nameRegister);
+        editTextCarPlate = findViewById(R.id.carplateRegister);
 
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -62,15 +75,22 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email, password;
+                String name, phone, carPlate;
 
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
 
-                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+                //register additional user details
+                name = String.valueOf(editTextName.getText());
+                phone = String.valueOf(editTextPhone.getText());
+                carPlate = String.valueOf(editTextCarPlate.getText());
 
-                    Toast.makeText(Registration.this, "Password or email is empty, try again.", Toast.LENGTH_SHORT).show();
+
+
+                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name)|| TextUtils.isEmpty(phone) || TextUtils.isEmpty(carPlate)){
+
+                    Toast.makeText(Registration.this, "Empty fields, try again.", Toast.LENGTH_SHORT).show();
                     return;
-
 
                 }
 
@@ -89,8 +109,21 @@ public class Registration extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
 
-                                                Toast.makeText(Registration.this, "Please verify your email address before logging in.",
-                                                        Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Registration.this, "Please verify your email address before logging in.", Toast.LENGTH_SHORT).show();
+
+                                                userID = mAuth.getCurrentUser().getUid();
+
+                                                //user object to record and store data into firestore
+                                                DocumentReference documentReference = fStore.collection("users").document(userID);
+                                                Map<String,Object> user = new HashMap<>();
+                                                user.put("email",email);
+                                                user.put("password",password);
+                                                user.put("name",name);
+                                                user.put("phone",phone);
+                                                user.put("carPlate",carPlate);
+                                                documentReference.set(user);
+
+
 
                                                 Intent intent = new Intent(getApplicationContext(), Login.class);
                                                 startActivity(intent);
